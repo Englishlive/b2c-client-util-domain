@@ -1,0 +1,20 @@
+{
+  "name": "b2c-client-utils",
+  "version": "0.0.0",
+  "main": "bundle.min.js",
+  "description": "Client utilities for b2c related projects",
+  "repository": {
+    "type": "git",
+    "url": "https://stash-bos.englishtown.com/projects/SANDIEGO/repos/b2c-client-utils/"
+  },
+  "devDependencies": {
+    "requirejs": "~2.1.15",
+    "grunt": "~0.4.1",
+    "grunt-bumpup": "~0.2.0",
+    "grunt-contrib-requirejs": "~0.4.4",
+    "grunt-contrib-uglify": ">= 0",
+    "grunt-tagrelease": "~0.2.0",
+    "amdclean": "~1.5.0",
+    "grunt-umd": "~2.2.1"
+  }
+}
