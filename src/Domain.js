@@ -26,12 +26,12 @@ define([
     Domain.ENGLISHTOWN_ES = 'englishtown.es';
 
     Domain.englishLives = [
-        Domain.ENGLISHTOWN,
         Domain.ENGLISHLIVE,
         Domain.ENGLISHLIVE_QA,
         Domain.ENGLISHLIVE_STAGING,
     ];
     Domain.englishTowns = [
+        Domain.ENGLISHTOWN,
         Domain.ENGLISHTOWN_JP,
         Domain.ENGLISHTOWN_MX,
         Domain.ENGLISHTOWN_RU,
