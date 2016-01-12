@@ -1,6 +1,6 @@
 {
   "name": "b2c-client-utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "bundle.min.js",
   "description": "Client utilities for b2c related projects",
   "repository": {
