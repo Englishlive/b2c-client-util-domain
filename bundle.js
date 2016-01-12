@@ -145,7 +145,11 @@ var Defer = function () {
     };
     return Defer;
 }();
-var Domain = function (Defer) {
+var Promise = function (Defer) {
+    'use strict';
+    return window.Promise || Defer.Promise;
+}(Defer);
+var Domain = function (Promise) {
     'use strict';
     var LIVE = 'live';
     var QA = 'qa';
@@ -166,12 +170,12 @@ var Domain = function (Defer) {
     Domain.ENGLISHTOWN_DE = 'englishtown.de';
     Domain.ENGLISHTOWN_ES = 'englishtown.es';
     Domain.englishLives = [
-        Domain.ENGLISHTOWN,
         Domain.ENGLISHLIVE,
         Domain.ENGLISHLIVE_QA,
         Domain.ENGLISHLIVE_STAGING
     ];
     Domain.englishTowns = [
+        Domain.ENGLISHTOWN,
         Domain.ENGLISHTOWN_JP,
         Domain.ENGLISHTOWN_MX,
         Domain.ENGLISHTOWN_RU,
@@ -200,6 +204,16 @@ var Domain = function (Defer) {
             brand: 'englishtown'
         }
     ];
+    function getResolvedPromise(v) {
+        return new Promise(function (rs) {
+            rs(v);
+        });
+    }
+    function getRejectedPromise(v) {
+        return new Promise(function (rs, rj) {
+            rj(v);
+        });
+    }
     function getByMarket(market) {
         var marketInfo;
         for (var l = englishtownMarkets.length; l--;) {
@@ -213,14 +227,12 @@ var Domain = function (Defer) {
     Domain.get = {
         by: function (options) {
             if (options == null) {
-                var reject = new Defer();
-                reject.reject('Option must be specified');
-                return reject.promise;
+                return getRejectedPromise('Option must be specified');
             }
             if (options.market) {
-                return Defer.resolve(getByMarket(options.market));
+                return getResolvedPromise(getByMarket(options.market));
             }
-            return Defer.reject('Option is empty or unknown');
+            return getRejectedPromise('Option is empty or unknown');
         }
     };
     Domain.config = { getMarket: null };
@@ -331,7 +343,7 @@ var Domain = function (Defer) {
         var me = this;
         var isSEODomain = me._context.is.subOf(Domain.ENGLISHTOWN_SEO);
         if (!isSEODomain) {
-            return Defer.resolve(me._context.domain);
+            return getResolvedPromise(me._context.domain);
         }
         var env = me.env();
         var currentMarketCode;
@@ -356,7 +368,7 @@ var Domain = function (Defer) {
         }).then(function () {
             return Domain.get.by({ market: currentMarketCode });
         }).then(function (marketDomain) {
-            return Defer.resolve(sub + marketDomain);
+            return getResolvedPromise(sub + marketDomain);
         });
     };
     function Checker(context) {
@@ -378,7 +390,7 @@ var Domain = function (Defer) {
         return this.subOf(Domain.all);
     };
     return Domain;
-}(Defer);
+}(Promise);
 var bundle = function (Domain) {
     'use strict';
     return { Domain: Domain };

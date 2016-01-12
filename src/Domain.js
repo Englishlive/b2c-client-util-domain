@@ -1,7 +1,7 @@
 define([
-    'Defer'
+    'Promise'
 ], function (
-    Defer
+    Promise
 ) {
     'use strict';
 
@@ -67,6 +67,18 @@ define([
         }
     ];
 
+    function getResolvedPromise(v) {
+        return new Promise(function(rs){
+            rs(v);
+        });
+    }
+
+    function getRejectedPromise(v) {
+        return new Promise(function(rs, rj){
+            rj(v);
+        });
+    }
+
     function getByMarket(market) {
         var marketInfo;
         for(var l = englishtownMarkets.length; l--;) {
@@ -81,15 +93,13 @@ define([
     Domain.get = {
         by: function(options) {
             if (options == null) {
-                var reject = new Defer();
-                reject.reject('Option must be specified');
-                return reject.promise;
+                return getRejectedPromise('Option must be specified');
             }
             if (options.market) {
-                return Defer.resolve(getByMarket(options.market));
+                return getResolvedPromise(getByMarket(options.market));
             }
 
-            return Defer.reject('Option is empty or unknown');
+            return getRejectedPromise('Option is empty or unknown');
         }
     };
 
@@ -239,7 +249,7 @@ define([
         var isSEODomain = me._context.is.subOf(Domain.ENGLISHTOWN_SEO);
 
         if(!isSEODomain){
-            return Defer.resolve(me._context.domain);
+            return getResolvedPromise(me._context.domain);
         }
 
         var env = me.env();
@@ -276,7 +286,7 @@ define([
             });
         })
         .then(function(marketDomain){
-            return Defer.resolve(sub + marketDomain);
+            return getResolvedPromise(sub + marketDomain);
         });
     };
 
