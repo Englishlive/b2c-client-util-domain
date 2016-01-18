@@ -23,7 +23,7 @@ var Defer = function () {
     function resolve() {
         var me = this;
         me.promise.result = arguments[0];
-        if (me.promise[REJECTED]) {
+        if (me.promise[RESOLVED] || me.promise[REJECTED]) {
             return;
         }
         me.promise[RESOLVED] = true;
@@ -35,7 +35,7 @@ var Defer = function () {
     function reject() {
         var me = this;
         me.promise.error = arguments[0];
-        if (me.promise[RESOLVED]) {
+        if (me.promise[RESOLVED] || me.promise[REJECTED]) {
             return;
         }
         me.promise[REJECTED] = true;
@@ -113,9 +113,14 @@ var Defer = function () {
         return defer.promise;
     };
     Defer.Promise = Promise;
-    Defer.resolve = function () {
+    Defer.resolve = function (v) {
         var result = new Defer();
-        result.resolve();
+        result.resolve(v);
+        return result.promise;
+    };
+    Defer.reject = function (v) {
+        var result = new Defer();
+        result.reject(v);
         return result.promise;
     };
     Defer.all = function (promises) {
@@ -192,18 +197,11 @@ var Domain = function (Promise) {
     Domain.env.STAGING = STAGING;
     Domain.env.QA = QA;
     Domain.env.DEV = DEV;
-    var englishtownMarkets = [
-        {
-            code: 'jp',
-            domain: Domain.ENGLISHTOWN_JP,
+    var englishtownMarkets = [{
+            code: 'br',
+            domain: Domain.ENGLISHTOWN_BR,
             brand: 'englishtown'
-        },
-        {
-            code: 'tw',
-            domain: Domain.ENGLISHTOWN,
-            brand: 'englishtown'
-        }
-    ];
+        }];
     function getResolvedPromise(v) {
         return new Promise(function (rs) {
             rs(v);
