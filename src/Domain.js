@@ -28,7 +28,7 @@ define([
     Domain.englishLives = [
         Domain.ENGLISHLIVE,
         Domain.ENGLISHLIVE_QA,
-        Domain.ENGLISHLIVE_STAGING,
+        Domain.ENGLISHLIVE_STAGING
     ];
     Domain.englishTowns = [
         Domain.ENGLISHTOWN,
@@ -56,13 +56,8 @@ define([
 
     var englishtownMarkets = [
         {
-            code: 'jp',
-            domain: Domain.ENGLISHTOWN_JP,
-            brand: 'englishtown'
-        },
-        {
-            code: 'tw',
-            domain: Domain.ENGLISHTOWN,
+            code: 'br',
+            domain: Domain.ENGLISHTOWN_BR,
             brand: 'englishtown'
         }
     ];
