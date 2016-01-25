@@ -24,11 +24,19 @@ define([
     Domain.ENGLISHTOWN_FR = 'englishtown.fr';
     Domain.ENGLISHTOWN_DE = 'englishtown.de';
     Domain.ENGLISHTOWN_ES = 'englishtown.es';
+    Domain.ENGLISHCENTER = 'englishcenters.ef.com';
+    Domain.ENGLISHCENTER_QA = 'qa-englishcenters.ef.com';
+    Domain.ENGLISHCENTER_STAGING = 'stg-englishcenters.ef.com';
 
     Domain.englishLives = [
         Domain.ENGLISHLIVE,
         Domain.ENGLISHLIVE_QA,
         Domain.ENGLISHLIVE_STAGING
+    ];
+    Domain.englishCenters = [
+        Domain.ENGLISHCENTER,
+        Domain.ENGLISHCENTER_QA,
+        Domain.ENGLISHCENTER_STAGING
     ];
     Domain.englishTowns = [
         Domain.ENGLISHTOWN,
@@ -46,7 +54,8 @@ define([
         Domain.ENGLISHTOWN_SEO
     ]
         .concat(Domain.englishLives)
-        .concat(Domain.englishTowns);
+        .concat(Domain.englishTowns)
+        .concat(Domain.englishCenters);
 
     Domain.env = {};
     Domain.env.LIVE = LIVE;
@@ -61,6 +70,22 @@ define([
             brand: 'englishtown'
         }
     ];
+
+    function has(array, value) {
+        if (typeof array.indexOf === 'function') {
+            return array.indexOf(value) >= 0;
+        }
+        else {
+            for(var i = 0; i < array.length; i++) {
+                if (array[i] === value) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+    }
 
     function getResolvedPromise(v) {
         return new Promise(function(rs){
@@ -122,25 +147,41 @@ define([
 
     Setter.prototype.env = function(env) {
         var topLevel = this._context.get.topLevel(Domain.all);
+        var prefixMode = false;
+        var productionDomain = Domain.ENGLISHLIVE;
 
         if (topLevel == null) {
             return;
         }
 
-        if (topLevel === Domain.ENGLISHLIVE ||
+        if (
+            topLevel === Domain.ENGLISHLIVE ||
             topLevel === Domain.ENGLISHLIVE_QA ||
-            topLevel === Domain.ENGLISHLIVE_STAGING) {
+            topLevel === Domain.ENGLISHLIVE_STAGING ||
+            topLevel === Domain.ENGLISHCENTER ||
+            topLevel === Domain.ENGLISHCENTER_QA ||
+            topLevel === Domain.ENGLISHCENTER_STAGING
+        ) {
+            prefixMode = true;
+        }
+
+        if (prefixMode) {
+            
+            if (has(Domain.englishCenters, topLevel)) {
+                productionDomain = Domain.ENGLISHCENTER;
+            }
+
             if (env === LIVE) {
-                this._context.domain = Domain.ENGLISHLIVE;
+                this._context.domain = productionDomain;
             }
             else if(env === STAGING) {
-                this._context.domain = 'stg-' + Domain.ENGLISHLIVE;
+                this._context.domain = 'stg-' + productionDomain;
             }
             else if(env === QA) {
-                this._context.domain = 'qa-' + Domain.ENGLISHLIVE;
+                this._context.domain = 'qa-' + productionDomain;
             }
             else if(env === DEV) {
-                this._context.domain = 'dev-' + Domain.ENGLISHLIVE;
+                this._context.domain = 'dev-' + productionDomain;
             }
         }
         else {
@@ -216,11 +257,16 @@ define([
             return null;
         }
 
-        if (topLevel === Domain.ENGLISHLIVE_QA) {
+        if (
+            topLevel === Domain.ENGLISHLIVE_QA || 
+            topLevel === Domain.ENGLISHCENTER_QA
+        ) {
             return QA;
         }
 
-        if (topLevel === Domain.ENGLISHLIVE_STAGING) {
+        if (topLevel === Domain.ENGLISHLIVE_STAGING || 
+            topLevel === Domain.ENGLISHCENTER_STAGING
+        ) {
             return STAGING;
         }
 
