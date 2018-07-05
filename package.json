@@ -4,6 +4,7 @@
   "main": "bundle.min.js",
   "description": "Client utilities for b2c related projects",
   "scripts": {
+    "build": "grunt",
     "preversion": "npm i && npm run build",
     "postversion": "git push && git push --tags"
   },
@@ -12,13 +13,14 @@
     "url": "https://bitbucket.eflabs.io/projects/SANDIEGO/repos/b2c-client-util-domain/"
   },
   "devDependencies": {
-    "requirejs": "~2.1.15",
+    "amdclean": "~1.5.0",
     "grunt": "~0.4.1",
     "grunt-bumpup": "~0.2.0",
+    "grunt-cli": "^1.2.0",
     "grunt-contrib-requirejs": "~0.4.4",
     "grunt-contrib-uglify": ">= 0",
     "grunt-tagrelease": "~0.2.0",
-    "amdclean": "~1.5.0",
-    "grunt-umd": "~2.2.1"
+    "grunt-umd": "~2.2.1",
+    "requirejs": "~2.1.15"
   }
 }
