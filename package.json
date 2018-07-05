@@ -22,5 +22,8 @@
     "grunt-tagrelease": "~0.2.0",
     "grunt-umd": "~2.2.1",
     "requirejs": "~2.1.15"
+  },
+  "dependencies": {
+    "compact-promise": "^2.2.0"
   }
 }

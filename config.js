@@ -1,7 +1,7 @@
 require({
     baseUrl: 'src',
     paths: {
-        'Defer': '../bower_components/compact-promise/src/Defer',
+        'Defer': '../node_modules/compact-promise/Defer.notick',
         'Promise': '../shim/Promise'
     }
 });
