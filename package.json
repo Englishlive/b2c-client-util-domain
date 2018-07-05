@@ -1,11 +1,11 @@
 {
-  "name": "b2c-client-utils",
+  "name": "b2c-client-util-domain",
   "version": "0.1.1",
   "main": "bundle.min.js",
   "description": "Client utilities for b2c related projects",
   "repository": {
     "type": "git",
-    "url": "https://stash-bos.englishtown.com/projects/SANDIEGO/repos/b2c-client-utils/"
+    "url": "https://bitbucket.eflabs.io/projects/SANDIEGO/repos/b2c-client-util-domain/"
   },
   "devDependencies": {
     "requirejs": "~2.1.15",
